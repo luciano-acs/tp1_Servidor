@@ -81,4 +81,9 @@ public class LineaDeVenta {
     public void setIdLinea(int idLinea) {
         this.idLinea = idLinea;
     }
+
+    @Override
+    public String toString() {
+        return "LineaDeVenta{" + "idLinea=" + idLinea + ", producto=" + producto + ", precioU=" + precioU + ", cantidad=" + cantidad + ", subtotal=" + subtotal + ", color=" + color + ", talle=" + talle + '}';
+    }
 }

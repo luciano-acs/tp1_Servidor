@@ -1,5 +1,5 @@
 package Modelo.Producto;
-import Servidor.ServidorBD;
+import BD.ServidorBD;
 import java.util.ArrayList;
 import Modelo.Venta.LineaDeVenta;
 

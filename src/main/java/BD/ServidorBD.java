@@ -1,4 +1,4 @@
-package Servidor;
+package BD;
 
 import Modelo.ClienteT.Cliente;
 import Modelo.Organizacion.Afip;
@@ -43,7 +43,7 @@ public class ServidorBD {
 //                System.out.println(ip);
             }
             Class.forName("com.mysql.cj.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://192.168.100.125:3306/tp1","Tienda","");
+            c = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/tp1","root","");
 //            System.out.println("CONECTADO");
         }
         catch(Exception e){

@@ -4,52 +4,34 @@
  */
 package Presentador;
 
-import Servidor.ServidorBD;
+import BD.ServidorBD;
 import Modelo.Organizacion.Empleado;
-import Vista.Sesion;
-import Vista.vistaMenu;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import static java.lang.System.exit;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
+import RMIInterfaces.RemoteInterface;
+import java.util.ArrayList;
 
 /**
  *
  * @author Luciano Acosta
  */
-public class PresentadorInicio implements ActionListener{
+public class PresentadorInicio{
 
-    Sesion iniciar = new Sesion();
     ServidorBD bd = new ServidorBD();
-    
-    public PresentadorInicio(Sesion inicio) {
-        this.iniciar = inicio;
-        this.iniciar.btnIngresar.addActionListener(this);
-        this.iniciar.btnSalir.addActionListener(this);    
+    public PresentadorInicio() {
         
-        iniciar.jlLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/percha (3).png")));
-        iniciar.btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/cerrar-sesion.png")));
-        iniciar.setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==iniciar.btnIngresar){
-            Empleado emp = bd.existeEmpleado(iniciar.jtfLegajo.getText(),iniciar.jtfContraseña.getText());
-            if(emp!=null){
-                vistaMenu menu = new vistaMenu();
-                PresentadorMenu pMenu = new PresentadorMenu(menu,iniciar,emp);
-                menu.setVisible(true);
-                iniciar.dispose();
-            }else{
-                JOptionPane.showMessageDialog(null, "Usuario y contraseña invalidos");
-            }                        
-        }
-        if(e.getSource()==iniciar.btnSalir){
-            exit(0);
-        }
-        e.setSource("");
+    public ArrayList<String> ingresarSistema(String legajo, String contraseña) {
+        ArrayList<String> empleado = new ArrayList<String>();
+        
+        Empleado emp = bd.existeEmpleado(legajo,contraseña);
+        
+        empleado.add(""+emp.getLegajo());
+        empleado.add(emp.getNombre());
+        empleado.add(emp.getApellido());
+        empleado.add(emp.getEmail());
+        empleado.add(emp.getContraseña());
+        empleado.add(emp.getRol());        
+        
+        return empleado;
     }
-    
 }

@@ -36,5 +36,11 @@ public class Auxiliar {
     public void setCantidad(String cantidad) {
         this.cantidad = cantidad;
     }
+
+    @Override
+    public String toString() {
+        return "Auxiliar{" + "color=" + color + ", talle=" + talle + ", cantidad=" + cantidad + '}';
+    }
+    
     
 }
