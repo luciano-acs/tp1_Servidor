@@ -29,14 +29,13 @@ import static java.lang.Integer.parseInt;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Luciano Acosta
  */
-public class PresentadorNuevaVenta{
+public class PresentadorNuevaVenta {
 
     ServidorBD bd = new ServidorBD();
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -47,7 +46,7 @@ public class PresentadorNuevaVenta{
     }
 
     public int cargarId() {
-        int idVenta = bd.ultimoCod();    
+        int idVenta = bd.ultimoCod();
         return idVenta;
     }
 
@@ -56,11 +55,11 @@ public class PresentadorNuevaVenta{
         Cliente cl = bd.buscarCliente(cuit);
 
         cliente.add(cl.getCuit());
-        cliente.add(cl.getRazonSocial());        
+        cliente.add(cl.getRazonSocial());
         cliente.add(cl.getDomicilio());
         cliente.add(cl.getEmail());
         cliente.add(cl.getCondicion());
-        
+
         return cliente;
     }
 
@@ -70,10 +69,9 @@ public class PresentadorNuevaVenta{
             if (bd.consultarStock(codigoProd) > 0) {
                 existe = true;
             } else {
-                showMessageDialog(null, "Producto sin stock");
+                existe = false;
             }
         } else {
-            showMessageDialog(null, "El producto no exite");
             return false;
         }
         return existe;
@@ -83,15 +81,15 @@ public class PresentadorNuevaVenta{
         ArrayList<ArrayList<String>> combos = new ArrayList<ArrayList<String>>();
         ArrayList<String> tipoV = new ArrayList<>();
         ArrayList<String> colorV = new ArrayList<>();
-        
+
         ArrayList<TipoDeTalle> tipo = bd.listarStockTipoTalle(Integer.parseInt(cod));
         ArrayList<Modelo.Producto.ColorP> color = bd.listarStockColor(Integer.parseInt(cod));
-        
-        for(int i=0; i<tipo.size();i++){
+
+        for (int i = 0; i < tipo.size(); i++) {
             tipoV.add(tipo.get(i).getDescripcion());
         }
         combos.add(tipoV);
-        for(int i=0; i<color.size();i++){
+        for (int i = 0; i < color.size(); i++) {
             colorV.add(color.get(i).getDescripcion());
         }
         combos.add(colorV);
@@ -101,9 +99,9 @@ public class PresentadorNuevaVenta{
     public ArrayList<String> cargarComboTalle(String tipo, String prod) {
         ArrayList<String> talles = new ArrayList<String>();
 
-        ServidorBD bd = new ServidorBD();
-        int cod = bd.buscarCodTipo(tipo);
-        ArrayList<Talle> talle = bd.buscarStockTalle(cod, prod);
+        ServidorBD bda = new ServidorBD();
+        int cod = bda.buscarCodTipo(tipo);
+        ArrayList<Talle> talle = bda.buscarStockTalle(cod, prod);
 
         for (int i = 0; i < talle.size(); i++) {
             talles.add(talle.get(i).getDescripcion());
@@ -132,21 +130,19 @@ public class PresentadorNuevaVenta{
 //    public void actualizarStock(int prod, int cant, int parseInt0, Talle t, ColorP co, double subtotal, double precio) {
 //        bd.actualizarStock(prod, cant, parseInt(ventas.jtfID.getText()), t, co, subtotal, precio);
 //    }
-
-
     public ArrayList<String> cargarProducto(String cod) {
         ArrayList<String> producto = new ArrayList<String>();
         Producto p = bd.listarProducto(Integer.parseInt(cod));
 
-        producto.add(""+p.getCodigo());
+        producto.add("" + p.getCodigo());
         producto.add(p.getDescripcion());
-        producto.add(""+p.getMarca().getDescripcionM());
-        producto.add(""+p.getCosto());        
-        producto.add(""+p.getPorcIVA());
-        producto.add(""+p.getMargenGanancia());
-        producto.add(""+p.getRubro());
-        producto.add(""+p.getStock());        
-        
+        producto.add("" + p.getMarca().getDescripcionM());
+        producto.add("" + p.getCosto());
+        producto.add("" + p.getPorcIVA());
+        producto.add("" + p.getMargenGanancia());
+        producto.add("" + p.getRubro());
+        producto.add("" + p.getStock());
+
         return producto;
     }
 
@@ -162,11 +158,11 @@ public class PresentadorNuevaVenta{
 
         linea.add(codigo);
         linea.add(descripcion);
-        linea.add(""+cant);
-        linea.add(""+precio);
-        linea.add(""+subtotal);
-        linea.add(""+t.getIdTalle());
-        linea.add(""+co.getIdColor());
+        linea.add("" + cant);
+        linea.add("" + precio);
+        linea.add("" + subtotal);
+        linea.add("" + t.getIdTalle());
+        linea.add("" + co.getIdColor());
 
 //        ""+parseInt(codigo)+""+cant+""+parseInt(ventas.jtfID.getText())+""+t+""+co+""+subtotal+""+precio
         bd.actualizarStock(parseInt(codigo), cant, parseInt(idVenta), t, co, subtotal, precio);
@@ -180,18 +176,19 @@ public class PresentadorNuevaVenta{
         bd.restaurarStock(codigo, cant, t, co, linea);
     }
 
-    public void cargarLinea(String fecha, int comprobante, double total, DefaultTableModel datos, String cliente) {
+    public void cargarLinea(String fecha, int comprobante, double total, String[][] datos, String cliente) {
         Cliente cl = bd.buscarCliente(cliente);
 
         ArrayList<LineaDeVenta> lista = new ArrayList<>();
-        for (int i = 0; i < datos.getRowCount(); i++) {
-            LineaDeVenta li = new LineaDeVenta();
-            li.setCantidad(Integer.parseInt(datos.getValueAt(i, 2).toString()));
+        for (int i = 0; i < datos.length; i++) {
 
-            Producto p = bd.buscarProducto(datos.getValueAt(i, 0).toString());
+            LineaDeVenta li = new LineaDeVenta();
+            li.setCantidad(Integer.parseInt(datos[i][2]));
+
+            Producto p = bd.buscarProducto(datos[i][0]);
             li.setProducto(p);
-            li.setPrecioU(Double.parseDouble(datos.getValueAt(i, 3).toString()));
-            li.setSubtotal(Double.parseDouble(datos.getValueAt(i, 4).toString()));
+            li.setPrecioU(Double.parseDouble(datos[i][3]));
+            li.setSubtotal(Double.parseDouble(datos[i][4]));
             lista.add(li);
         }
 
@@ -199,6 +196,7 @@ public class PresentadorNuevaVenta{
     }
 
     private void cargarVenta(String fecha, int comprobante, double total, Cliente cl, ArrayList<LineaDeVenta> lista) {
+        System.out.println("cargar venta");
         Venta ve = new Venta(fecha, comprobante, total, cl, lista);
         solicitarAutorizacion(ve);
     }
@@ -208,14 +206,13 @@ public class PresentadorNuevaVenta{
         if (respuesta.getFeCabResp().getResultado().equals("A")) {
             bd.registrarVenta(ve, 25);
 
-            showMessageDialog(null, "Venta registrada y aprobada");
-
+//            showMessageDialog(null, "Venta registrada y aprobada");
             registrarFactura(ve, respuesta, "efectivo");
         } else {
             String mensaje1 = respuesta.getFeDetResp().getFECAEDetResponse().get(0).getObservaciones().getObs().get(0).getMsg();
             String mensaje2 = respuesta.getFeCabResp().getResultado();
             System.out.println(mensaje1);
-            showMessageDialog(null, "La venta no fue autorizada: " + mensaje2);
+//            showMessageDialog(null, "La venta no fue autorizada: " + mensaje2);
         }
     }
 
@@ -328,16 +325,15 @@ public class PresentadorNuevaVenta{
         for (int i = 0; i < datos.getRowCount(); i++) {
             datos.removeRow(i);
         }
-        showMessageDialog(null, "Venta cancelada");
+//        showMessageDialog(null, "Venta cancelada");
     }
 
     public void finalizarVenta(String id, String tipopago, String total) {
         Venta ve = bd.buscarVenta(Integer.parseInt(id));
-
         FormaDePago fdp = bd.buscarFormaPago(tipopago);
         Pago pago = new Pago(Integer.parseInt(id),
-                 Double.parseDouble(total), fdp, ve);
-        bd.registrarPago(pago);;
+                Double.parseDouble(total), fdp, ve);
+        bd.registrarPago(pago);
     }
 
 }

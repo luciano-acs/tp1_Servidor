@@ -1,5 +1,6 @@
 package Servidor;
 
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -11,10 +12,10 @@ public class Principal {
 
     public static void main(String[] args) {
         try {
-            Registry miRegistry = LocateRegistry.createRegistry(6000);
+            Registry miRegistry = LocateRegistry.createRegistry(5000);
             miRegistry.rebind("RemoteInterface", new ServerImplements());
             System.out.println("Servidor Conectado");
-        } catch (Exception e) {
+        } catch (RemoteException e) {
             System.out.println(e.getMessage());
         }
     }

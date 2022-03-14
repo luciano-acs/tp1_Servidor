@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Servidor;
 
 import BD.ServidorBD;
@@ -183,6 +179,7 @@ public class ServerImplements extends UnicastRemoteObject implements RemoteInter
     @Override
     public boolean verificarExistencia(String nombre) {
         boolean existe = ventasNueva.verificarExistencia(nombre);
+        System.out.println("verificar existencia en servidor");
         return existe;
     }
 
@@ -228,12 +225,13 @@ public class ServerImplements extends UnicastRemoteObject implements RemoteInter
     }
 
     @Override
-    public ArrayList<String> cargarCombosTalle() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<String> cargarCombosTalle(String tipo, String prod) {
+        ArrayList<String> comboTalle = ventasNueva.cargarComboTalle(tipo, prod);
+        return comboTalle;
     }
 
     @Override
-    public void cargarLineaV(String fecha, int comprobante, double total, DefaultTableModel datos, String cliente) {
+    public void cargarLineaV(String fecha, int comprobante, double total, String[][] datos, String cliente) {        
         ventasNueva.cargarLinea(fecha,comprobante,total,datos,cliente);
     }
 

@@ -6,7 +6,6 @@ package Presentador;
 
 import BD.ServidorBD;
 import Modelo.Organizacion.Empleado;
-import RMIInterfaces.RemoteInterface;
 import java.util.ArrayList;
 
 /**

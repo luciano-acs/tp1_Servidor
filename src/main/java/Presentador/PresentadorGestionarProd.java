@@ -12,8 +12,6 @@ import Modelo.Producto.Producto;
 import Modelo.Producto.Talle;
 import Modelo.Producto.TipoDeTalle;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -117,7 +115,7 @@ public class PresentadorGestionarProd{
         ColorP co = new ColorP(bd.buscarCodColor(color), color);
 
         bd.actualizarStockG(p.getCodigo(), Integer.parseInt(cant), t, co);
-        JOptionPane.showMessageDialog(null, "Stock actualizado");
+//        JOptionPane.showMessageDialog(null, "Stock actualizado");
     }
 
     public ArrayList<String> llenarCombos(String tipo) {
